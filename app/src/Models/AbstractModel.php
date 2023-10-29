@@ -79,7 +79,6 @@ abstract class AbstractModel
     {
         return $this->getBuilder()
             ->where($key, $val)
-            ->whereNull ('deleted_at')
             ->first();
     }
 
@@ -133,20 +132,6 @@ abstract class AbstractModel
      * @return int
      */
     public function delete($id)
-    {
-        $data = [];
-        $now = $this->getNowTime();
-        $data['updated_at'] = $now;
-        $data['deleted_at'] = $now;
-
-        return $this->getBuilder()->where(self::PRIMARY_KEY, $id)->update($data);
-    }
-
-    /**
-     * @param array $data
-     * @return int
-     */
-    public function hardDelete($id)
     {
         return $this->getBuilder()->delete($id);
     }
