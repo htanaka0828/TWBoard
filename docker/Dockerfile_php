@@ -1,0 +1,18 @@
+FROM public.ecr.aws/docker/library/php:8.2-fpm-bullseye
+
+# COPY
+COPY ./docker/stat/php.ini /usr/local/etc/php/php.ini
+
+RUN apt-get update && apt-get install -y vim zip unzip zlib1g-dev libpng-dev libjpeg-dev libfreetype6-dev
+
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-install -j$(nproc) gd
+
+RUN docker-php-ext-install mysqli pdo_mysql
+
+# install composer
+COPY --from=public.ecr.aws/docker/library/composer:lts /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+
+CMD php -S 0.0.0.0:9000 -t public

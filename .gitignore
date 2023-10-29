@@ -1,0 +1,4 @@
+.env
+app/vendor
+docker/phpmyadmin/sessions/*
+!docker/phpmyadmin/sessions/.empty
